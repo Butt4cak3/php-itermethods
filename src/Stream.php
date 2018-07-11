@@ -50,6 +50,10 @@ class Stream implements \Iterator {
 
     // Data operations
 
+    public function cache() {
+        return new Stream(new IteratorCache($this->data));
+    }
+
     public function concat($other) {
         return new Stream(new ConcatIterator([$this->data, $other]));
     }
