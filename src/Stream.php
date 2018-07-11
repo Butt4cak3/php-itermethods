@@ -223,7 +223,20 @@ class Stream implements \Iterator {
      * @return string
      */
     public function join($separator = "") {
-        return implode($separator, $this->collect());
+        $result = "";
+
+        $first = true;
+        foreach ($this->data as $item) {
+            if ($first) {
+                $first = false;
+            } else {
+                $result .= $separator;
+            }
+
+            $result .= $item;
+        }
+
+        return $result;
     }
 
     /**
