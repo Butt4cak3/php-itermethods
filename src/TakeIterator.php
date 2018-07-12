@@ -4,6 +4,7 @@ namespace itermethods;
 class TakeIterator implements \Iterator {
     private $data;
     private $filter;
+    private $key;
 
     public function __construct($data, $filter) {
         $this->data = $data;
@@ -12,6 +13,7 @@ class TakeIterator implements \Iterator {
 
     public function rewind() {
         $this->data->rewind();
+        $this->key = 0;
     }
 
     public function valid() {
@@ -19,7 +21,7 @@ class TakeIterator implements \Iterator {
     }
 
     public function key() {
-        return $this->data->key();
+        return $this->key;
     }
 
     public function current() {
@@ -28,15 +30,16 @@ class TakeIterator implements \Iterator {
 
     public function next() {
         $this->data->next();
+        $this->key += 1;
     }
 
     private function applyFilter() {
         $fn = $this->filter;
 
         if (is_callable($this->filter)) {
-            return $fn($this->data->current(), $this->data->key());
+            return $fn($this->data->current(), $this->key());
         } elseif (is_int($this->filter)) {
-            return $this->data->key() < $this->filter;
+            return $this->key < $this->filter;
         }
     }
 }
